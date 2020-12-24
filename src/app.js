@@ -63,6 +63,11 @@ app.delete('/students/:id', async (req, res) =>{
                 new: true,
                 runValidators: true
             });
+            if(!student){
+                return res.status(404).json({
+                    message: "no longer exist/record not found"
+                })
+            }
             res.status(200).json({
                 status:"success",
                 data:{
