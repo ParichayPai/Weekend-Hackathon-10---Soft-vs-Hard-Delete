@@ -50,28 +50,21 @@ app.get('/students/:id', async (req, res) =>{
 // delete specific student
 app.delete('/students/:id', async (req, res) =>{
     // write your codes here
-    try{
-        const query = req.query.type;
-        if(!query) return;
-        if(query === 'hard'){
-            const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err =>  res.status(404).send(err.message));
-            // const delStudent = await Student.findByIdAndDelete(req.params.id);
-            // res.json(student);
-        }else if(query === 'soft'){
-            const student = await Student.findByIdAndUpdate(req.params.id, {isDeleted: true}, {
-                new: true,
-                runValidators: true
-            });
-            if(!student){
-                return res.status(404).send("Error");
-            }
-            res.status(200).json(student);
-        }
-    }catch(err){
-        res.status(500).json({
-            status:"fail",
-            message: err
+    const query = req.query.type;
+    if(!query) return;
+    if(query === 'hard'){
+        const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err =>  res.status(404).send(err.message));
+        // const delStudent = await Student.findByIdAndDelete(req.params.id);
+        // res.json(student);
+    }else if(query === 'soft'){
+        const student = await Student.findByIdAndUpdate(req.params.id, {isDeleted: true}, {
+            new: true,
+            runValidators: true
         });
+        if(!student){
+            return res.status(404).send(err.message);
+        }
+        res.status(200).json(student);
     }
 }) 
 
