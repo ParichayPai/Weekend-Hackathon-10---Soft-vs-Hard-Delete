@@ -53,11 +53,12 @@ app.delete('/students/:id', async (req, res) =>{
     try{
         const query = req.query.type;
         if(query === 'hard'){
-            const delStudent = await Student.findByIdAndDelete(req.params.id);
-            res.json({
-                status:"success",
-                data: delStudent
-            });
+            Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err => res.send(err.message));
+            // const delStudent = await Student.findByIdAndDelete(req.params.id);
+            // res.json({
+            //     status:"success",
+            //     data: delStudent
+            // });
         }else if(query === 'soft'){
             const student = await Student.findByIdAndUpdate(req.params.id, {isDeleted: true}, {
                 new: true,
