@@ -54,11 +54,7 @@ app.delete('/students/:id', async (req, res) =>{
         const query = req.query.type;
         if(!query) return;
         if(query === 'hard'){
-            const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err => res.send(err.message));
-            if (!student) {
-                res.status(404).send("Error");
-                return;
-            }
+            const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err =>  res.status(404).send(err.message));
             // const delStudent = await Student.findByIdAndDelete(req.params.id);
             res.json(student);
         }else if(query === 'soft'){
@@ -67,9 +63,7 @@ app.delete('/students/:id', async (req, res) =>{
                 runValidators: true
             });
             if(!student){
-                return res.status(404).json({
-                    message: "no longer exist/record not found"
-                })
+                return res.status(404).send("Error");
             }
             res.status(200).json({
                 status:"success",
