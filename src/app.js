@@ -48,50 +48,50 @@ app.get('/students/:id', async (req, res) =>{
 })
 
 // delete specific student
-// app.delete('/students/:id', async (req, res) =>{
-//     // write your codes here
-//     const query = req.query.type; // /students/:id?type=hard
-//     const id = req.params.id; 
-//     if(!query) return;
-//     if(query === 'hard'){
-//         // const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err =>  res.status(404).send(err.message));
-//         const student = await Student.findByIdAndDelete(id);
-//         res.status(200).json(student);
-//     }else if(query === 'soft'){
-//         const student = await Student.findByIdAndUpdate(req.params.id, {isDeleted: true}, {
-//             new: true,
-//             runValidators: true
-//         });
-//         if(!student){
-//             return res.status(404).send(err.message);
-//         }
-//         res.status(200).json(student);
-//     }
-// }) 
-app.delete('/students/:id', async (req, res) => {
+app.delete('/students/:id', async (req, res) =>{
     // write your codes here
-    let type = req.query.type;
-    const id = req.params.id;
-
-    if (isNullOrUndefined(id)) {
-        res.sendStatus(404);
+    const query = req.query.type; // /students/:id?type=hard
+    const id = req.params.id; 
+    if(!query) return;
+    if(query === 'hard'){
+        // const student = Student.findByIdAndDelete(id).then(() => res.send(id)).catch(err =>  res.status(404).send(err.message));
+        const student = await Student.findByIdAndDelete(id);
+        res.status(200).json(student);
+    }else if(query === 'soft'){
+        const student = await Student.findByIdAndUpdate(req.params.id, {isDeleted: true}, {
+            new: true,
+            runValidators: true
+        });
+        if(!student){
+            return res.status(404).send(err.message);
+        }
+        res.status(200).json(student);
     }
-    if (isNullOrUndefined(type)) {
-        type = "hard";
-    }
+}) 
+// app.delete('/students/:id', async (req, res) => {
+//     // write your codes here
+//     let type = req.query.type;
+//     const id = req.params.id;
 
-    const newId = await Student.findOne({"_id": id});
-    if (type === "soft" && newId["isDeleted"] === false) {
-        await Student.updateOne({"_id": id}, {"isDeleted": true});
-    } else if(type === "hard"){
-        await Student.deleteOne({"_id": id})
-    } else {
-        res.sendStatus(404);
-    }
+//     if (isNullOrUndefined(id)) {
+//         res.sendStatus(404);
+//     }
+//     if (isNullOrUndefined(type)) {
+//         type = "hard";
+//     }
 
-    res.sendStatus(200);
+//     const newId = await Student.findOne({"_id": id});
+//     if (type === "soft" && newId["isDeleted"] === false) {
+//         await Student.updateOne({"_id": id}, {"isDeleted": true});
+//     } else if(type === "hard"){
+//         await Student.deleteOne({"_id": id})
+//     } else {
+//         res.sendStatus(404);
+//     }
 
-})
+//     res.sendStatus(200);
+
+// })
 
 
 module.exports = app;
